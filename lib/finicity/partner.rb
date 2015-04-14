@@ -20,7 +20,7 @@ module Finicity
       base_url = "https://api.finicity.com/aggregation/v2/"
 
       url = base_url + path
-      RestClient.proxy = "54.88.136.216"
+      RestClient.proxy = ENV["QUOTAGUARDSTATIC_URL"]
 
       RestClient.post(url, xml, {:content_type => :xml, "Finicity-App-Key" => "30d4600267701941ea2a38b1fa7d7110"}){ |response, request, result, &block|
           case response.code
