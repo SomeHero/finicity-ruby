@@ -22,6 +22,8 @@ module Finicity
       url = base_url + path
       RestClient.proxy = ENV["QUOTAGUARDSTATIC_URL"]
 
+      puts url
+
       RestClient.post(url, xml, {:content_type => :xml, "Finicity-App-Key" => "30d4600267701941ea2a38b1fa7d7110"}){ |response, request, result, &block|
           case response.code
           when 200
@@ -32,6 +34,8 @@ module Finicity
             response.return!(request, result, &block)
           end
       }
+
+      puts response
 
     end
 
