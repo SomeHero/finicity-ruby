@@ -34,9 +34,6 @@ module Finicity
             response.return!(request, result, &block)
           end
       }
-
-      puts response
-
     end
 
   end
