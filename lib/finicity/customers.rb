@@ -1,30 +1,29 @@
 module Finicity
   # Abstracting as a class makes it easier since we wont have to redefine the access_token over and over.
-  class Partner
+  class Customers
 
     def initialize
       Finicity::Configure::KEYS.each do |key|
         instance_variable_set(:"@#{key}", Finicity.instance_variable_get(:"@#{key}"))
       end
     end
+    def add_customer token, username, first_name, last_name, email_address
+      xml = "<customer> <username>#{username}</username> <firstName>James</firstName> <lastName>Rhodes</lastName></customer>"
 
-    def authenticate
-      xml = "<credentials> <partnerId>2445581240361</partnerId> <partnerSecret>N2DUM99WXbEycslppl6h</partnerSecret> </credentials>"
+      @response = post("v1/customers/testing", token, xml)
 
-      @response = post("partners/authentication", xml)
+      hash = Hash.from_xml(@response)
 
-      puts @response
+      hash
     end
 
-    def post path, xml
-      base_url = "https://api.finicity.com/aggregation/v2/"
+    def post path, token, xml
+      base_url = self.instance_variable_get(:'@base_url')
 
       url = base_url + path
       RestClient.proxy = ENV["QUOTAGUARDSTATIC_URL"]
 
-      puts url
-
-      RestClient.post(url, xml, {:content_type => :xml, "Finicity-App-Key" => "30d4600267701941ea2a38b1fa7d7110"}){ |response, request, result, &block|
+      RestClient.post(url, xml, {:content_type => :xml, "Finicity-App-Key" => self.instance_variable_get(:'@api_key'), "Finicity-App-Token" => token}){ |response, request, result, &block|
           case response.code
           when 200
             response
@@ -35,6 +34,5 @@ module Finicity
           end
       }
     end
-
   end
 end
