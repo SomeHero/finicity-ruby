@@ -15,7 +15,7 @@ module Finicity
       else
         url = "v1/customers"
       end
-      
+
       @response = post(url, token, xml)
 
       hash = Hash.from_xml(@response)
