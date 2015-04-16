@@ -10,7 +10,13 @@ module Finicity
     def add_customer token, username, first_name, last_name, email_address
       xml = "<customer> <username>#{username}</username> <firstName>James</firstName> <lastName>Rhodes</lastName></customer>"
 
-      @response = post("v1/customers/testing", token, xml)
+      if(self.instance_variable_get(:'@is_testing'))
+        url = "v1/customers/testing"
+      else
+        url = "v1/customers"
+      end
+      
+      @response = post(url, token, xml)
 
       hash = Hash.from_xml(@response)
 
