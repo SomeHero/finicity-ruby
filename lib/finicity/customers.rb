@@ -11,9 +11,11 @@ module Finicity
       xml = "<customer> <username>#{username}</username> <firstName>James</firstName> <lastName>Rhodes</lastName></customer>"
 
       if(self.instance_variable_get(:'@is_testing'))
+        Rails.logger.debug "Using test customer endpoint"
         url = "v1/customers/testing"
       else
-        url = "v1/customers"
+        Rails.logger.debug "Using active customer endpoint"
+        url = "v1/customers/active"
       end
 
       @response = post(url, token, xml)
