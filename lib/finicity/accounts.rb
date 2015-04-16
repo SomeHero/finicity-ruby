@@ -8,16 +8,24 @@ module Finicity
       end
     end
 
-    def discover token, customer_id, institution_id, field_id_1, field_name_1, username, field_id_2, field_name_2, password
-      xml = "<accounts> <credentials> <loginField> <id>#{field_id_1}</id> <name>#{field_name_1}</name> <value>#{username}</value> </loginField> <loginField> <id>#{field_id_2}</id> <name>#{field_name_2}</name> <value>#{password}</value> </loginField> </credentials> </accounts>"
+    def discover token, customer_id, institution_id, login_fields
+      xml = "<accounts> <credentials>"
+      login_fields.each do |login_field|
+        xml += "<loginField> <id>#{login_field[:field_id]}</id> <name>#{login_field[:field_name]}</name> <value>#{login_field[:field_value]}</value> </loginField>"
+      end
+      xml += "</credentials> </accounts>"
 
       url = "v1/customers/#{customer_id}/institutions/#{institution_id}/accounts"
 
       @response = post(url, token, xml)
     end
 
-    def discover_with_mfa token, mfa_session_token, customer_id, institution_id, field_id_1, field_name_1, username, field_id_2, field_name_2, password, mfa_question, mfa_answer
-      xml = "<accounts> <credentials> <loginField> <id>#{field_id_1}</id> <name>#{field_name_1}</name> <value>#{username}</value> </loginField> <loginField> <id>#{field_id_2}</id> <name>#{field_name_2}</name> <value>#{password}</value> </loginField> </credentials> <mfaChallenges> <questions> <question> <text>#{mfa_question}</text> <answer>#{mfa_answer}</answer> </question> </questions> </mfaChallenges> </accounts>"
+    def discover_with_mfa token, mfa_session_token, customer_id, institution_id, login_fields, mfa_question, mfa_answer
+      xml = "<accounts> <credentials>"
+      login_fields.each do |login_field|
+        xml += "<loginField> <id>#{login_field[:field_id]}</id> <name>#{login_field[:field_name]}</name> <value>#{login_field[:field_value]}</value> </loginField>"
+      end  
+      xml += "</credentials> <mfaChallenges> <questions> <question> <text>#{mfa_question}</text> <answer>#{mfa_answer}</answer> </question> </questions> </mfaChallenges> </accounts>"
 
       url = "v1/customers/#{customer_id}/institutions/#{institution_id}/accounts/mfa"
 
