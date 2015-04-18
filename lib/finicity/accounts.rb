@@ -24,7 +24,7 @@ module Finicity
       xml = "<accounts> <credentials>"
       login_fields.each do |login_field|
         xml += "<loginField> <id>#{login_field[:field_id]}</id> <name>#{login_field[:field_name]}</name> <value>#{login_field[:field_value]}</value> </loginField>"
-      end  
+      end
       xml += "</credentials> <mfaChallenges> <questions> <question> <text>#{mfa_question}</text> <answer>#{mfa_answer}</answer> </question> </questions> </mfaChallenges> </accounts>"
 
       url = "v1/customers/#{customer_id}/institutions/#{institution_id}/accounts/mfa"
@@ -50,6 +50,12 @@ module Finicity
 
     def get_accounts token, customer_id
       url = "v1/customers/#{customer_id}/accounts"
+
+      @response = post(url, token, nil)
+    end
+
+    def get_account token, customer_id, account_id
+      url = "v1/customers/#{customer_id}/accounts/#{account_id}"
 
       @response = post(url, token, nil)
     end
