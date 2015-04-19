@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |s|
   s.name        = 'finicity'
-  s.version     = '0.1.8'
+  s.version     = '0.1.9'
   s.date        = '2015-04-14'
   s.summary     = "Finicity api gem"
   s.description = "A simple to use ruby wrapper for Fincity API."

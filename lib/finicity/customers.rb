@@ -10,7 +10,7 @@ module Finicity
     def add_customer token, username, first_name, last_name, email_address
       xml = "<customer> <username>#{username}</username> <firstName>James</firstName> <lastName>Rhodes</lastName></customer>"
 
-      if(self.instance_variable_get(:'@is_testing'))
+      if(self.instance_variable_get(:'@is_testing') == "true")
          Rails.logger.debug "Using test customer endpoint"
          url = "v1/customers/testing"
       else
